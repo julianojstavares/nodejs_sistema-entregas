@@ -10,6 +10,11 @@ interface ICreateClient{
 export class CreateClientUseCase {
 
   async execute({password, username}: ICreateClient) {
+
+    if(!username) {
+        throw new Error("Username is required");
+    }
+
     // Validar se o cliente já existe
     const clientExists = await prisma.clients.findFirst({
         where: {
@@ -26,7 +31,10 @@ export class CreateClientUseCase {
     }
 
     // Se não existir, criptografar a senha
-    const hashPassword = await hash(password, 10);
+    let hashPassword = ""; 
+
+    if(password) { hashPassword = await hash(password, 10); }
+    else { throw new Error("Password not informed"); }
 
     // Criar o cliente
     const client = await prisma.clients.create({
