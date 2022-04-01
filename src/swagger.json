@@ -1,0 +1,622 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Sistema de entregas",
+        "description": "API desenvolvida no curso de NodeJS da Rocketseat",
+        "version": "1.0.0",
+        "contact": {
+            "email": "julianojstavares@outlook.com"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000",
+            "description": "Servidor local"
+        } 
+    ],
+    "paths": 
+    {
+        "/client": 
+        {
+            "post": 
+            {
+                "summary": "Cadastrar cliente",
+                "description": "Cria um novo cliente no banco de dados",
+                "tags": ["Cliente"],
+                "requestBody": 
+                {
+                    "content": 
+                    {
+                        "application/json": 
+                        {
+                            "schema": 
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": 
+                {
+                    "201": 
+                    {
+                        "description": "Sucesso",
+                        "content": 
+                        {
+                            "application/json": 
+                            {
+                                "schema": 
+                                {
+                                    "$ref": "#/components/schemas/UserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": 
+                    {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/client/authenticate": 
+        {
+            "post": 
+            {
+                "summary": "Autenticar cliente",
+                "description": "Autentica um cliente no sistema e retorna um json web token (jwt)",
+                "tags": ["Cliente"],
+                "requestBody": 
+                {
+                    "content": 
+                    {
+                        "application/json": 
+                        {
+                            "schema": 
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": 
+                {
+                    "201": 
+                    {
+                        "description": "Sucesso",
+                        "content": 
+                        {
+                            "text/plain": 
+                            {
+                                "schema": 
+                                {
+                                    "$ref": "#/components/schemas/Token"
+                                }
+                            }
+                        }
+                    },
+                    "400": 
+                    {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/deliveryman": 
+        {
+            "post": 
+            {
+                "summary": "Cadastrar entregador",
+                "description": "Cria um novo entregador no banco de dados",
+                "tags": ["Entregador"],
+                "requestBody": 
+                {
+                    "content": 
+                    {
+                        "application/json": 
+                        {
+                            "schema": 
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": 
+                {
+                    "201": 
+                    {
+                        "description": "Sucesso",
+                        "content": 
+                        {
+                            "application/json": 
+                            {
+                                "schema": 
+                                {
+                                    "$ref": "#/components/schemas/UserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": 
+                    {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/deliveryman/authenticate": 
+        {
+            "post": 
+            {
+                "summary": "Autenticar entregador",
+                "description": "Autentica um entregador no sistema e retorna um json web token (jwt)",
+                "tags": ["Entregador"],
+                "requestBody": 
+                {
+                    "content": 
+                    {
+                        "application/json": 
+                        {
+                            "schema": 
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": 
+                {
+                    "201": 
+                    {
+                        "description": "Sucesso",
+                        "content": 
+                        {
+                            "text/plain": 
+                            {
+                                "schema": 
+                                {
+                                    "$ref": "#/components/schemas/Token"
+                                }
+                            }
+                        }
+                    },
+                    "400": 
+                    {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/delivery": 
+        {
+            "post": 
+            {
+                "summary": "Cadastrar entrega",
+                "description": "Rota autenticada. É necessário se autenticar como um cliente para obter um jwt. Com o jwt, clique no botão 'Authorize' no topo da página, informe o jwt SEM ASPAS, e então acione o botão 'Try it out' para testar. Cria uma nova entrega, de um determinado produto, no banco de dados",
+                "tags": ["Entrega"],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": 
+                {
+                    "content": 
+                    {
+                        "application/json": 
+                        {
+                            "schema": 
+                            {
+                                "$ref": "#/components/schemas/Delivery"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": 
+                {
+                    "201": 
+                    {
+                        "description": "Sucesso",
+                        "content": 
+                        {
+                            "application/json": 
+                            {
+                                "schema": 
+                                {
+                                    "$ref": "#/components/schemas/DeliveryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": 
+                    {
+                        "description": "Bad Request"
+                    },
+                    "401": 
+                    {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/delivery/available": 
+        {
+            "get": 
+            {
+                "summary": "Listar entregas disponíveis",
+                "description": "Rota autenticada. É necessário se autenticar como um entregador para obter um jwt. Com o jwt, clique no botão 'Authorize' no topo da página, informe o jwt SEM ASPAS, e então acione o botão 'Try it out' para testar. Lista todas as entregas disponíveis para o entregador",
+                "tags": ["Entrega"],
+                "security": [{ "bearerAuth": [] }],
+                "responses": 
+                {
+                    "200": 
+                    {
+                        "description": "Sucesso",
+                        "content": 
+                        {
+                            "application/json": 
+                            {
+                                "schema": 
+                                {
+                                    "type": "array",
+                                    "items": 
+                                    {
+                                        "$ref": "#/components/schemas/DeliveryResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": 
+                    {
+                        "description": "Bad Request"
+                    },
+                    "401": 
+                    {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/delivery/updateDeliveryman/:id": 
+        {
+            "put": 
+            {
+                "summary": "Atribuir entregador",
+                "description": "Rota autenticada. É necessário se autenticar como um entregador para obter um jwt. Com o jwt, clique no botão 'Authorize' no topo da página, informe o jwt SEM ASPAS, e então acione o botão 'Try it out' para testar. Vincula um entregador a uma entrega",
+                "tags": ["Entrega"],
+                "parameters": 
+                [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Id da entrega",
+                        "required": true,
+                        "schema": 
+                        {
+                            "type": "string",
+                            "example": "0ab2a62f-0581-45b6-b0b1-633febf74ee3"
+                        }
+                    }
+                ],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": 
+                {
+                    "content": 
+                    {
+                        "application/json": 
+                        {
+                            "schema": 
+                            {
+                                "$ref": "#/components/schemas/DeliveryResponse"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": 
+                {
+                    "200": 
+                    {
+                        "description": "Sucesso",
+                        "content": 
+                        {
+                            "application/json": 
+                            {
+                                "schema": 
+                                {
+                                    "$ref": "#/components/schemas/DeliveryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": 
+                    {
+                        "description": "Bad Request"
+                    },
+                    "401": 
+                    {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/client/deliveries": 
+        {
+            "get": 
+            {
+                "summary": "Listar entregas do cliente",
+                "description": "Rota autenticada. É necessário se autenticar como um cliente para obter um jwt. Com o jwt, clique no botão 'Authorize' no topo da página, informe o jwt SEM ASPAS, e então acione o botão 'Try it out' para testar. Exibe todas as entregas endereçadas a um determinado cliente",
+                "tags": ["Cliente"],
+                "security": [{ "bearerAuth": [] }],
+                "responses": 
+                {
+                    "200": 
+                    {
+                        "description": "Sucesso",
+                        "content": 
+                        {
+                            "application/json": 
+                            {
+                                "schema": 
+                                {
+                                    "type": "array",
+                                    "items": 
+                                    {
+                                        "$ref": "#/components/schemas/ClientDeliveriesResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": 
+                    {
+                        "description": "Bad Request"
+                    },
+                    "401": 
+                    {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/deliveryman/deliveries": 
+        {
+            "get": 
+            {
+                "summary": "Listar entregas de um determinado entregador",
+                "description": "Rota autenticada. É necessário se autenticar como um entregador para obter um jwt. Com o jwt, clique no botão 'Authorize' no topo da página, informe o jwt SEM ASPAS, e então acione o botão 'Try it out' para testar. Exibe todas as entregas pendentes e concluídas (end_at com data) de um determinado entregador",
+                "tags": ["Entregador"],
+                "security": [{ "bearerAuth": [] }],
+                "responses": 
+                {
+                    "200": 
+                    {
+                        "description": "Sucesso",
+                        "content": 
+                        {
+                            "application/json": 
+                            {
+                                "schema": 
+                                {
+                                    "type": "array",
+                                    "items": 
+                                    {
+                                        "$ref": "#/components/schemas/ClientDeliveriesResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": 
+                    {
+                        "description": "Bad Request"
+                    },
+                    "401": 
+                    {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/delivery/updateEndDate/:id": 
+        {
+            "put": 
+            {
+                "summary": "Concluir entrega",
+                "description": "Rota autenticada. É necessário se autenticar como um entregador para obter um jwt. Com o jwt, clique no botão 'Authorize' no topo da página, informe o jwt SEM ASPAS, e então acione o botão 'Try it out' para testar. Rota para concluir uma entrega. Atribui a data atual como conclusão a uma entrega",
+                "tags": ["Entrega"],
+                "parameters": 
+                [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Id da entrega",
+                        "required": true,
+                        "schema": 
+                        {
+                            "type": "string",
+                            "example": "0ab2a62f-0581-45b6-b0b1-633febf74ee3"
+                        }
+                    }
+                ],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": 
+                {
+                    "content": 
+                    {
+                        "application/json": 
+                        {
+                            "schema": 
+                            {
+                                "$ref": "#/components/schemas/DeliveryResponse"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": 
+                {
+                    "200": 
+                    {
+                        "description": "Sucesso",
+                        "content": 
+                        {
+                            "application/json": 
+                            {
+                                "schema": 
+                                {
+                                    "$ref": "#/components/schemas/DeliveryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": 
+                    {
+                        "description": "Bad Request"
+                    },
+                    "401": 
+                    {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        }
+
+    },
+    "components": 
+    {
+        "schemas": 
+        {
+            "User": 
+            {
+                "type": "object",
+                "properties": 
+                {
+                    "username": 
+                    {
+                        "type": "string",
+                        "example": "Juliano"
+                    },
+                    "password": 
+                    {
+                        "type": "string",
+                        "example": "123456"
+                    }
+                }
+            },
+            "UserResponse": 
+            {
+                "type": "object",
+                "properties": 
+                {
+                    "id": 
+                    {
+                        "type": "string",
+                        "example": "8b0415c1-4893-484b-90b7-0b2939067c0b"
+                    },
+                    "username": 
+                    {
+                        "type": "string",
+                        "example": "Juliano"
+                    },
+                    "password": 
+                    {
+                        "type": "string",
+                        "example": "$2b$10$zQJScDlXyJG70S8gTTyLaun4cYJ4ePW.7TUh8IX.kHAKRXl2J5hjG"
+                    }
+                }
+            },
+            "Token":
+            {
+                "type": "text/plain",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBhdWxvIEdhbG8iLCJpYXQiOjE2NDg4MTc4OTgsImV4cCI6MTY0ODkwNDI5OCwic3ViIjoiOGE3MjM3MTgtNDcyNC00NWYzLWIzMjgtYTg3ODAzNjllODMxIn0.p86_MU39YXzoIiRj9BGNSLWPwnjMWVKZcT8Fx5Y1tWU"
+            },
+            "Delivery": 
+            {
+                "type": "object",
+                "properties": 
+                {
+                    "item_name": 
+                    {
+                        "type": "string",
+                        "example": "Xbox One X"
+                    }
+                }
+            },
+            "DeliveryResponse": 
+            {
+                "type": "object",
+                "properties": 
+                {
+                    "id": 
+                    {
+                        "type": "string",
+                        "example": "4da1d42d-98a4-4b3a-8fcf-a943d4bc4cda"
+                    },
+                    "id_client": 
+                    {
+                        "type": "string",
+                        "example": "71fc5a0f-292f-4b53-9818-8df3abc72f27"
+                    },
+                    "id_deliveryman": 
+                    {
+                        "type": "string",
+                        "example": null
+                    },
+                    "item_name": 
+                    {
+                        "type": "string",
+                        "example": "Xbox One X"
+                    },
+                    "created_at": 
+                    {
+                        "type": "string",
+                        "example": "2022-04-01T00:51:04.252Z"
+                    },
+                    "end_at": 
+                    {
+                        "type": "string",
+                        "example": null
+                    }
+                }
+            },
+            "ClientDeliveriesResponse": 
+            {
+                "type": "object",
+                "properties": 
+                {
+                    "id":
+                    {
+                        "type": "string",
+                        "example": "4da1d42d-98a4-4b3a-8fcf-a943d4bc4cda"
+                    },
+                    "username": 
+                    {
+                        "type": "string",
+                        "example": "Juliano"
+                    },
+                    "deliveries": 
+                    {
+                        "type": "array",
+                        "items": 
+                        {
+                            "$ref": "#/components/schemas/DeliveryResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": 
+        {
+            "bearerAuth": 
+            {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
