@@ -16,4 +16,4 @@ Para executar, após clonar, faça:
 - abra o browser e digite "localhost:3000"
 
 
-![sistema_de_entregas](./sistema_de_entregas.png)
+![sistema_de_entregas](./sistema_de_entregas.pdf)
