@@ -16,4 +16,4 @@ Para executar, após clonar, faça:
 - abra o browser e digite "localhost:3000"
 
 
-![sistema_de_entregas](./sistema_de_entregas.pdf)
+![sistema_de_entregas](https://docs.google.com/viewer?url=https://github.com/julianojstavares/nodejs_sistema-entregas/blob/hotfix/1.0.3/sistema_de_entregas.pdf)
