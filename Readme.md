@@ -16,4 +16,5 @@ Para executar, após clonar, faça:
 - abra o browser e digite "localhost:3000"
 
 
-<img src="sistema_de_entregas.svg">
+<img src="sistema_de_entregas_1.svg">
+<img src="sistema_de_entregas_2.svg">
